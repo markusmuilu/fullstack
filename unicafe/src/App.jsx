@@ -12,6 +12,20 @@ const Increase = (props) => {
 
 }
 
+const Statistics = (props) => {
+  const { good, neutral, bad } = props
+  return (
+    <div>
+      <h1>statistics</h1>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>average {(good - bad) / (good + bad + neutral)}</p>
+      <p>positive {good * 100.0 / (good + bad + neutral)}%</p>
+    </div>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -27,12 +41,7 @@ const App = () => {
       <Button onclick={goodup} text='good' />
       <Button onclick={neutralup} text='neutral' />
       <Button onclick={badup} text='bad' />
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>average {(good - bad) / (good + bad + neutral)}</p>
-      <p>positive {good*100.0/(good+bad+neutral) }%</p>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
