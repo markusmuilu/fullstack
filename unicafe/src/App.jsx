@@ -14,9 +14,17 @@ const Increase = (props) => {
 
 const Statistics = (props) => {
   const { good, neutral, bad } = props
-  return (
+  if (bad == 0 && neutral == 0 && good == 0){
+    return (
     <div>
       <h1>statistics</h1>
+      <p>no feedback given</p>
+    </div>
+  )
+      }return (
+    <div>
+      <h1>statistics</h1>
+      
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
