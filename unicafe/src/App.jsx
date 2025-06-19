@@ -12,6 +12,13 @@ const Increase = (props) => {
 
 }
 
+const Statisticsline = (props) => {
+  const { text, count } = props
+  return (
+    <div>{text} {count}</div>
+  )
+}
+
 const Statistics = (props) => {
   const { good, neutral, bad } = props
   if (bad == 0 && neutral == 0 && good == 0){
@@ -24,10 +31,10 @@ const Statistics = (props) => {
       }return (
     <div>
       <h1>statistics</h1>
-      
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
+      <Statisticsline text='good' count={good} />
+      <Statisticsline text='neutral' count={neutral} />   
+      <Statisticsline text='bad' count={bad}/>
+
       <p>average {(good - bad) / (good + bad + neutral)}</p>
       <p>positive {good * 100.0 / (good + bad + neutral)}%</p>
     </div>
