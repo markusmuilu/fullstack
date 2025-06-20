@@ -14,8 +14,10 @@ const Increase = (props) => {
 
 const Statisticsline = (props) => {
   const { text, count } = props
-  return (
-    <div>{text} {count}</div>
+  return (<tr>
+    <td>{ text }</td>
+      <td> { count }</td>
+    </tr>
   )
 }
 
@@ -23,21 +25,39 @@ const Statistics = (props) => {
   const { good, neutral, bad } = props
   if (bad == 0 && neutral == 0 && good == 0){
     return (
-    <div>
-      <h1>statistics</h1>
-      <p>no feedback given</p>
-    </div>
+      <tbody>
+        <tr>
+          <th>
+            statistics
+          </th>
+        </tr>
+        <tr>
+          <td>
+            no feedback given
+          </td>
+        </tr>
+      </tbody> 
   )
-      }return (
-    <div>
-      <h1>statistics</h1>
-      <Statisticsline text='good' count={good} />
-      <Statisticsline text='neutral' count={neutral} />   
-      <Statisticsline text='bad' count={bad}/>
+    }return (
+      <tbody>
+        <tr>
+          <th>
+            statistics
+          </th>
+        </tr>
+        <Statisticsline text='good' count={good} />
+        <Statisticsline text='neutral' count={neutral} />
+        <Statisticsline text='bad' count={bad}/>
 
-      <p>average {(good - bad) / (good + bad + neutral)}</p>
-      <p>positive {good * 100.0 / (good + bad + neutral)}%</p>
-    </div>
+        <tr>
+          <td>average</td>
+          <td>{(good - bad) / (good + bad + neutral)}</td>
+        </tr>
+        <tr>
+          <td>positive</td>
+          <td> {good * 100.0 / (good + bad + neutral)}%</td>
+        </tr>   
+      </tbody>
   )
 }
 
@@ -50,13 +70,24 @@ const App = () => {
   const badup = () => setBad(bad + 1)
   return (
     <div>
-      <h1>
-        give feedback
-      </h1>
-      <Button onclick={goodup} text='good' />
-      <Button onclick={neutralup} text='neutral' />
-      <Button onclick={badup} text='bad' />
-      <Statistics good={good} neutral={neutral} bad={bad}/>
+      
+      
+      
+      <table>
+        <tbody>
+          <tr>
+            <th>
+              give feedback
+            </th>
+          </tr>
+          <tr>
+            <td><Button onclick={goodup} text='good' /></td>
+            <td><Button onclick={neutralup} text='neutral' /></td>
+            <td><Button onclick={badup} text='bad' /></td>
+          </tr>
+        </tbody>
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      </table>
     </div>
   )
 }
