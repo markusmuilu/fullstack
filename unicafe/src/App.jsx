@@ -81,9 +81,9 @@ const App = () => {
             </th>
           </tr>
           <tr>
-            <td><Button onclick={goodup} text='good' /></td>
-            <td><Button onclick={neutralup} text='neutral' /></td>
-            <td><Button onclick={badup} text='bad' /></td>
+            <td><Button onclick={goodup} text='good' />
+            <Button onclick={neutralup} text='neutral' />
+            <Button onclick={badup} text='bad' /></td>
           </tr>
         </tbody>
         <Statistics good={good} neutral={neutral} bad={bad} />
