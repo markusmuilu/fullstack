@@ -36,10 +36,13 @@ const App = () => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <Button onClick={handleVoteClick} text='Vote'/>
-      <Button onClick={handleNextClick} text='Next anecdote'/>
+      <Button onClick={handleNextClick} text='Next anecdote' />
+      <h1> Anecdote with most votes</h1>
+      {anecdotes[votes.find(Math.max(0, ...votes))]}
     </div>
   )
 }
