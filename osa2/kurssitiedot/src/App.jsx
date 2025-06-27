@@ -11,13 +11,16 @@ const Part = (props) => {
   )
 }
 
-const Content = (props) => {
-  console.log("Content content", props)
-  return (<div>
+const Content = ({parts}) => {
+  console.log("Content content", parts)
+  return (/*<div>
     <Part part={props.parts[0]} />
     <Part part={props.parts[1]} />
     <Part part={props.parts[2]} />
-  </div>)
+  </div>*/
+    <div>
+      {parts.map(part => <Part key={parts.findIndex((e) => e == part)} part={part} />)}
+    </div>)
 }
 
 const Total = (props) => {
