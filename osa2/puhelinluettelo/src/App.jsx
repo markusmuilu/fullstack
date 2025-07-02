@@ -3,7 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
-
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,14 +13,16 @@ const App = () => {
 
   useEffect(() => {
     console.log("Effect")
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService
+      .getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        console.log(initialPersons)
+        setPersons(initialPersons)
       })
   }, [])
   console.log('render', persons.length, 'persons')
+  console.log(persons)
 
   const addName = (event) => {
     event.preventDefault()
@@ -29,11 +31,24 @@ const App = () => {
       number: newNumber
     }
     if (persons.filter(person => person.name == nameObject.name).length == 0) {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      personService.create(nameObject)
+        .then(updatedPerson => {
+          setPersons(persons.concat(updatedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
     } else {
-      alert(`${nameObject.name} is already added to phonebook`)
+      const person = persons.find(p => p.name === nameObject.name) 
+      if (window.confirm(`${person.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = { ...person, number: nameObject.number }
+        personService.update(changedPerson.id, changedPerson)
+          .then(updated => {
+            setPersons(persons.filter(p => p.id !== updated.id).concat(updated))
+            setNewName('')
+            setNewNumber('')
+          }
+          )
+      }
     }  
   }
 
@@ -49,6 +64,13 @@ const App = () => {
     setNewSearch(event.target.value)
   }
 
+  const handlePersonRemoval = (id) => {
+    const person = persons.find(p => p.id === id)
+     if (window.confirm(`Delete ${person.name}?`)) {
+        personService.remove(person.id)
+        setPersons(persons.filter(p => p.id !== person.id))
+      }
+  }
   const personsleft = newSearch.length == 0 ? persons : persons.filter(person => person.name.includes(newSearch))
 
   return (
@@ -63,7 +85,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <PersonList personlist={personsleft} />
+      <PersonList personlist={personsleft} remove={handlePersonRemoval } />
     </div>
   )
 
