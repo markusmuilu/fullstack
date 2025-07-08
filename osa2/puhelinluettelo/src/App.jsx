@@ -4,12 +4,15 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [errorState, setErrorState] = useState(false)
 
   useEffect(() => {
     console.log("Effect")
@@ -32,10 +35,14 @@ const App = () => {
     }
     if (persons.filter(person => person.name == nameObject.name).length == 0) {
       personService.create(nameObject)
-        .then(updatedPerson => {
-          setPersons(persons.concat(updatedPerson))
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
           setNewName('')
           setNewNumber('')
+          setErrorMessage(`Added ${newPerson.name}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
     } else {
       const person = persons.find(p => p.name === nameObject.name) 
@@ -46,6 +53,10 @@ const App = () => {
             setPersons(persons.filter(p => p.id !== updated.id).concat(updated))
             setNewName('')
             setNewNumber('')
+            setErrorMessage(`${changedPerson.name} number updated`)
+            setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)
           }
           )
       }
@@ -68,7 +79,21 @@ const App = () => {
     const person = persons.find(p => p.id === id)
      if (window.confirm(`Delete ${person.name}?`)) {
         personService.remove(person.id)
+          .catch( () => {
+            setErrorState(true)
+            setErrorMessage(`${person.name} already deleted`)
+            setTimeout( () => {
+              setErrorMessage(null)
+              setErrorState(false)
+            }, 5000)
+          }
+
+        )
         setPersons(persons.filter(p => p.id !== person.id))
+        setErrorMessage(`Deleted ${person.name}`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       }
   }
   const personsleft = newSearch.length == 0 ? persons : persons.filter(person => person.name.includes(newSearch))
@@ -76,6 +101,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} error={errorState} />
 
       <Filter newSearch={newSearch} handler={handleSearchChange} />
       
