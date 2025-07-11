@@ -70,7 +70,7 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    if (persons.filter(p => p.name === body.name)){
+    if (persons.filter(p => p.name === body.name).length !== 0){
         return response.status(404).json({
             error: 'name must be unique'
         })
@@ -89,6 +89,7 @@ app.post('/api/persons', (request, response) => {
     }
 
     persons = persons.concat(person)
+    response.json(person)
 })
 
 const PORT = 3001
