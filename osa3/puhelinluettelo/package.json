@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\""
+    "dev": "concurrently \"npm run dev --prefix puhelinluettelo\" \"npm run dev --prefix back\""
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
