@@ -33,6 +33,10 @@ let persons = [
   }
 ]
 
+app.get('/', (request, response) => {
+  response.send('Server is running!');
+})
+
 app.get('/api/persons', (request, response) => {
     return response.json(persons)
 })
