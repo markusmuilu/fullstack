@@ -35,7 +35,8 @@ const App = () => {
     }
     if (persons.filter(person => person.name == nameObject.name).length == 0) {
       personService.create(nameObject)
-        .then(newPerson => {
+        .then(response => {
+          const newPerson = response.data
           setPersons(persons.concat(newPerson))
           setNewName('')
           setNewNumber('')
@@ -43,6 +44,16 @@ const App = () => {
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
+          console.log('No error')
+        }).catch(error => {
+          setErrorState(true)
+          console.log(error.response.data.error)
+          setErrorMessage(`Addition failed due to: ${error.response.data.error}`)
+          setTimeout( () => {
+            setErrorMessage(null)
+            setErrorState(false)
+          }, 5000)
+          console.log('error')
         })
     } else {
       const person = persons.find(p => p.name === nameObject.name) 

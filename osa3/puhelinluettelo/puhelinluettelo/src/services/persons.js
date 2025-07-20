@@ -9,7 +9,9 @@ const getAll = () => {
 
 const create = newObject => {
     const request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
+    const toreturn = request
+    console.log(toreturn.data)
+    return toreturn
 }
 
 const update = (id, newObject) => {
