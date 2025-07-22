@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "Biggest question",
+    "author": "Markus",
+    "url": "big questions",
+    "likes": 5000000
+}
