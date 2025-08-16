@@ -12,10 +12,12 @@
   "author": "Markus",
   "license": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cross-env": "^10.0.0",
     "dotenv": "^17.2.0",
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.16.3"
   },
