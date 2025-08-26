@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   const blogStyle = {
@@ -28,8 +28,8 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   }
   return (
     <div style={blogStyle}>
-      <div> 
-        {blog.title} {blog.author} 
+      <div>
+        {blog.title} {blog.author}
         <button style={hideWhenVisible} onClick={() => setInfoVisible(!infoVisible)}> view</button>
         <button style={showWhenVisible} onClick={() => setInfoVisible(!infoVisible)}> hide</button>
       </div>
@@ -39,7 +39,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
         <p>{name}</p>
         {user.username === blog.user.username ? <button onClick={handleDelete}>Remove</button>: <div></div> }
       </div>
-  </div>
-)}
+    </div>
+  )}
 
 export default Blog

@@ -9,8 +9,8 @@ import Togglable from './components/Togglable.jsx'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [errorState, setErrorState] = useState(false)
@@ -21,7 +21,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -36,104 +36,104 @@ const App = () => {
   const addBlog = (blogObject) => {
     try {
       blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        const blogAdded = {
-        ...returnedBlog,
-        user: {
-          id: user.id,
-          name: user.name,
-          username: user.username
-        }
-      }
-      console.log(blogAdded)
-      setBlogs(blogs.concat(blogAdded))
-        setErrorMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-        blogFormRef.current.toggleVisibility()
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
-    } catch (e) {
+        .create(blogObject)
+        .then(returnedBlog => {
+          const blogAdded = {
+            ...returnedBlog,
+            user: {
+              id: user.id,
+              name: user.name,
+              username: user.username
+            }
+          }
+          console.log(blogAdded)
+          setBlogs(blogs.concat(blogAdded))
+          setErrorMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+          blogFormRef.current.toggleVisibility()
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
+    } catch {
       setErrorState(true)
       setErrorMessage('Error creating blog')
       setTimeout(() => {
-          setErrorMessage(null)
-          setErrorState(false)
-        }, 5000)
+        setErrorMessage(null)
+        setErrorState(false)
+      }, 5000)
     }
-    }
+  }
 
   const updateBlog = (blogObject) => {
     try {
       blogService
-      .update(blogObject)
-      .then(returnedBlog => {
-        const originalBlog = blogs.find(blog => blog.id === returnedBlog.id);
-        const updatedBlogWithUser = {
-          ...returnedBlog,
-          user: originalBlog.user 
-        }
-        setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? updatedBlogWithUser : blog))
-        setErrorMessage(`blog ${returnedBlog.title} has now ${returnedBlog.likes}`)
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
+        .update(blogObject)
+        .then(returnedBlog => {
+          const originalBlog = blogs.find(blog => blog.id === returnedBlog.id)
+          const updatedBlogWithUser = {
+            ...returnedBlog,
+            user: originalBlog.user
+          }
+          setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? updatedBlogWithUser : blog))
+          setErrorMessage(`blog ${returnedBlog.title} has now ${returnedBlog.likes}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
-    } catch (e) {
+    } catch {
       setErrorState(true)
       setErrorMessage('Like couldnt be added')
       setTimeout(() => {
-          setErrorMessage(null)
-          setErrorState(false)
-        }, 5000)
+        setErrorMessage(null)
+        setErrorState(false)
+      }, 5000)
     }
-    }
+  }
 
   const deleteBlog = (blogObject) => {
     if (window.confirm(`Remove blog ${blogObject.title} by ${blogObject.author}`)) {
       try {
         blogService
-        .deleteBlog(blogObject)
-        .then( () => {
-          setBlogs(blogs.filter(blog => blog.id != blogObject.id))
-          setErrorMessage(`blog ${blogObject.title} was deleted`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          .deleteBlog(blogObject)
+          .then( () => {
+            setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+            setErrorMessage(`blog ${blogObject.title} was deleted`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
-      } catch (e) {
+      } catch {
         setErrorState(true)
         setErrorMessage('Like couldnt be added')
-        setTimeout(() => {
-            setErrorMessage(null)
-            setErrorState(false)
-          }, 5000)
-      }
-    }
-  }
-
-  const handleLogin = async event => {
-      event.preventDefault()
-      
-      try {
-        const user = await loginService.login({ username, password })
-        window.localStorage.setItem(
-        'loggedblogappUser', JSON.stringify(user)
-      ) 
-        blogService.setToken(user.token)
-        setUser(user)
-        setUsername('')
-        setPassword('')
-      } catch {
-        setErrorState(true)        
-        setErrorMessage('wrong username or password')
         setTimeout(() => {
           setErrorMessage(null)
           setErrorState(false)
         }, 5000)
       }
     }
+  }
+
+  const handleLogin = async event => {
+    event.preventDefault()
+
+    try {
+      const user = await loginService.login({ username, password })
+      window.localStorage.setItem(
+        'loggedblogappUser', JSON.stringify(user)
+      )
+      blogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch {
+      setErrorState(true)
+      setErrorMessage('wrong username or password')
+      setTimeout(() => {
+        setErrorMessage(null)
+        setErrorState(false)
+      }, 5000)
+    }
+  }
 
   const loginForm = () => (
     <Togglable buttonLabel="login" ref={loginFormRef}>
