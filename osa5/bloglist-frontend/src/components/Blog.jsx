@@ -27,9 +27,9 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
     deleteBlog(blog)
   }
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
-        {blog.title} {blog.author}
+        <span>{blog.title} {blog.author}</span>
         <button style={hideWhenVisible} onClick={() => setInfoVisible(!infoVisible)}> view</button>
         <button style={showWhenVisible} onClick={() => setInfoVisible(!infoVisible)}> hide</button>
       </div>
@@ -40,6 +40,7 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
         {user.username === blog.user.username ? <button onClick={handleDelete}>Remove</button>: <div></div> }
       </div>
     </div>
-  )}
+  )
+}
 
 export default Blog
